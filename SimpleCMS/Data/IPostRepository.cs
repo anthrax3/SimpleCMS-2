@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace SimpleCMS.Data
 {
-    interface IPostRepository
+    public interface IPostRepository
     {
         Post Get (string id);
+
+        void Edit (string id, Post updatedItem);
+
+        void Create (Post model);
+
+        IEnumerable<Post> GetAll ();
     }
 }

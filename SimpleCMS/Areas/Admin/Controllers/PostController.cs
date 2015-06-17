@@ -22,7 +22,9 @@ namespace SimpleCMS.Areas.Admin.Controllers
         // GET: Admin/Post
         public ActionResult Index()
         {
-            return View();
+            var posts = _repository.GetAll();
+
+            return View(posts);
         }
 
         [HttpGet]
@@ -43,14 +45,16 @@ namespace SimpleCMS.Areas.Admin.Controllers
                 return View(model);
             }
 
+            _repository.Create(model);
+
             return RedirectToAction("index");
         }
 
         [HttpGet]
-        [Route("edit/{id}")]
-        public ActionResult Edit (string id)
+        [Route("edit/{postId}")]
+        public ActionResult Edit (string postId)
         {
-            var post = _repository.Get(id);
+            var post = _repository.Get(postId);
 
             if (post == null) {
                 return HttpNotFound();
@@ -60,13 +64,21 @@ namespace SimpleCMS.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Route("edit/{id}")]
+        [Route("edit/{postId}")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit (Post model)
+        public ActionResult Edit (string postId, Post model)
         {
+            var post = _repository.Get(postId);
+
+            if (post == null) {
+                return HttpNotFound();
+            }
+            
             if (!ModelState.IsValid) {
                 return View(model);
             }
+
+            _repository.Edit(postId, model);
 
             return RedirectToAction("index");
         }
