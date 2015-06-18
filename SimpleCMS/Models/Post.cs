@@ -22,6 +22,8 @@ namespace SimpleCMS.Models
         
         [Display(Name = "Date Published")]
         public DateTime? Publised { get; set; }
+
+        public IList<string> Tags { get; set; }
         
         public int AuthorId { get; set; }
     }
